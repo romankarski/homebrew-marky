@@ -11,15 +11,13 @@ class Marky < Formula
   def install
     cache_dir = buildpath/".npm-cache"
 
-    cd "package" do
-      system Formula["node"].opt_bin/"npm", "install", "--omit=dev", "--cache", cache_dir
-    end
+    system Formula["node"].opt_bin/"npm", "install", "--omit=dev", "--cache", cache_dir
 
-    libexec.install "package"
+    libexec.install Dir["*"]
 
     (bin/"marky").write <<~SH
       #!/bin/bash
-      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/package/server/dist/cli.js" "$@"
+      exec "#{Formula["node"].opt_bin}/node" "#{libexec}/server/dist/cli.js" "$@"
     SH
   end
 
